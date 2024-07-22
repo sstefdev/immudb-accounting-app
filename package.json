@@ -1,0 +1,18 @@
+{
+  "name": "immudb-accounting-app",
+  "version": "1.0.0",
+  "description": "Accounting application using immudb Vault",
+  "scripts": {
+    "start:backend": "cd backend && npm run start:dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "immudb",
+    "accounting",
+    "nestjs",
+    "vuejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}

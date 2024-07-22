@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./immudb-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - IMMUDB_API_KEY=${IMMUDB_API_KEY}
+      - AUTH_TOKEN=${AUTH_TOKEN}
+
+  frontend:
+    build:
+      context: ./immudb-fe
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+
+networks:
+  default:
+    driver: bridge
