@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - ./immudb-backend/.env
     environment:
       - NODE_ENV=production
-      - IMMUDB_API_KEY=${IMMUDB_API_KEY}
-      - AUTH_TOKEN=${AUTH_TOKEN}
 
   frontend:
     build:
