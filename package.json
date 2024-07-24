@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Accounting application using immudb Vault",
   "scripts": {
-    "start:backend": "cd backend && npm run start:dev",
-    "start:frontend": "cd frontend && npm run dev",
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+    "start:backend": "cd immudb-be && npm run start:dev",
+    "start:frontend": "cd immudb-fe && npm run dev",
+    "install:all": "npm install && cd immudb-be && npm install && cd ../immudb-fe && npm install"
   },
   "keywords": [
     "immudb",

@@ -3,12 +3,12 @@ version: "3.8"
 services:
   backend:
     build:
-      context: ./immudb-backend
+      context: ./immudb-be
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
-      - ./immudb-backend/.env
+      - ./immudb-be/.env
     environment:
       - NODE_ENV=production
 
@@ -18,6 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:80"
+    env_file:
+      - ./immudb-fe/.env
 
 networks:
   default:
