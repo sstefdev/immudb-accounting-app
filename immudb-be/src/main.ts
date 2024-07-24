@@ -9,6 +9,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
+  app.enableCors({
+    origin: 'http://localhost:8080',
+    credentials: true,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('ImmuDB Accounting API')
     .setDescription('API for ImmuDB Accounting Application')
