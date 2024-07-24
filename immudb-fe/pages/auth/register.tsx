@@ -12,7 +12,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await register(username, password);
-      router.push("/login");
+      router.push("/auth/login");
     } catch (error) {
       console.error("Registration failed:", error);
     }

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { createAccount } from "../services/api";
+import { createAccount } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
 const CreateAccount = () => {
@@ -12,8 +12,14 @@ const CreateAccount = () => {
     amount: "",
     type: "sending",
   });
-  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -35,8 +41,13 @@ const CreateAccount = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    router.push("/login");
+  useEffect(() => {
+    if (isClient && !isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isClient, isAuthenticated, router]);
+
+  if (!isClient) {
     return null;
   }
 
