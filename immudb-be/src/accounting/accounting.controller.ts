@@ -52,10 +52,10 @@ export class AccountingController {
     description: 'Page number for pagination',
   })
   @ApiQuery({
-    name: 'perPage',
+    name: 'limit',
     required: false,
     type: Number,
-    description: 'Number of items per page',
+    description: 'Maximum number of documents to fetch',
   })
   @ApiResponse({
     status: 200,
@@ -65,14 +65,14 @@ export class AccountingController {
   async getUserAccounts(
     @Req() req: Request,
     @Query('page') page: number = 1,
-    @Query('perPage') perPage: number = 10,
+    @Query('limit') limit: number = 100,
   ) {
     const user = req['user'];
     try {
       const result = await this.immudbService.getDocumentsByUsername(
         user.username,
         page || 1,
-        perPage || 10,
+        limit || 10,
       );
       return result;
     } catch (error) {

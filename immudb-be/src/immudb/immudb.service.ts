@@ -59,7 +59,7 @@ export class ImmudbService {
   async getDocumentsByUsername(
     username: string,
     page: number = 1,
-    perPage: number = 10,
+    limit: number = 10,
   ) {
     const url = `${this.apiUrl}/collection/default/documents/search`;
     const headers = {
@@ -85,15 +85,15 @@ export class ImmudbService {
           return rest;
         });
 
-      const startIndex = (page - 1) * perPage;
-      const endIndex = startIndex + perPage;
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
       const paginatedDocuments = filteredDocuments.slice(startIndex, endIndex);
 
       return {
         documents: paginatedDocuments,
         totalCount: filteredDocuments.length,
         page,
-        perPage,
+        limit,
       };
     } catch (error) {
       console.error(
@@ -163,6 +163,50 @@ export class ImmudbService {
           `Error setting up request: ${error.message}`,
         );
       }
+    }
+  }
+
+  async findDocumentByAccountNumber(accountNumber: string) {
+    const url = `${this.apiUrl}/collection/default/documents/search`;
+    const headers = {
+      'X-API-Key': this.apiKey,
+      'Content-Type': 'application/json',
+    };
+
+    const searchQuery = {
+      query: {
+        expressions: [
+          {
+            fieldComparisons: [
+              {
+                field: 'accountNumber',
+                operator: 'EQ',
+                value: accountNumber,
+              },
+            ],
+          },
+        ],
+      },
+      page: 1,
+      perPage: 1,
+    };
+
+    try {
+      const response = await lastValueFrom(
+        this.httpService.post(url, searchQuery, { headers }),
+      );
+
+      return response.data.revisions.length > 0
+        ? response.data.revisions[0].document
+        : null;
+    } catch (error) {
+      console.error(
+        'Error in findDocumentByAccountNumber:',
+        error.response?.data || error.message,
+      );
+      throw new BadRequestException(
+        `Failed to search for account: ${error.response?.data?.error || error.message}`,
+      );
     }
   }
 }

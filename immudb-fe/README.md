@@ -63,4 +63,62 @@ Environment Variables
 
 - NEXT_PUBLIC_API_URL: The URL of the Accounting Backend.
 
+## Future Improvements
+
+### Server-Side Rendering (SSR) and Cookie-Based Authentication
+
+Due to time constraints, the current implementation uses client-side rendering and does not implement cookie-based authentication. However, for a production environment, the following improvements could be made:
+
+1. **Server-Side Rendering (SSR)**: Implement SSR for the main pages, especially the accounts listing page. This would improve initial load times and SEO. The implementation could look like this:
+
+   ```typescript
+   export const getServerSideProps: GetServerSideProps = async (context) => {
+     // Fetch data on the server
+     const accounts = await fetchAccounts();
+
+     return {
+       props: { accounts },
+     };
+   };
+   ```
+
+2. Cookie-Based Authentication: Replace the current token storage method with HTTP-only cookies for enhanced security. This would involve:
+
+   - Updating the login process to set a cookie
+   - Modifying the API service to read the cookie and include it in requests
+   - Adjusting server-side logic to validate the cookie on protected routes
+
+   ```typescript
+   Cookies.set("token", accessToken, {
+     httpOnly: true,
+     secure: process.env.NODE_ENV === "production",
+   });
+   ```
+
+3. Authentication in SSR: Combine SSR with authentication to protect routes server-side:
+
+```typescript
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const token = context.req.cookies.token;
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  // Fetch data using the token
+  const accounts = await fetchAccountsWithToken(token);
+
+  return {
+    props: { accounts },
+  };
+};
+```
+
+These improvements would enhance the application's performance, SEO, and security. They are recommended for a production-ready version of the application.
+
 Author: [@sstefdev](https://github.com/sstefdev)

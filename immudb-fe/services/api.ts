@@ -15,23 +15,45 @@ api.interceptors.request.use((config) => {
 });
 
 export const login = async (username: string, password: string) => {
-  const response = await api.post("/auth/login", { username, password });
-  return response.data;
+  try {
+    const response = await api.post("/auth/login", { username, password });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message || "Login failed");
+    }
+    throw error;
+  }
 };
 
 export const register = async (username: string, password: string) => {
-  const response = await api.post("/auth/register", { username, password });
-  return response.data;
+  try {
+    const response = await api.post("/auth/register", { username, password });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message || "Registration failed");
+    }
+    throw error;
+  }
 };
 
-export const getAccounts = async () => {
-  const response = await api.get("/accounting");
-  return response.data;
+export const getAccounts = async (page: number = 1, limit: number = 10) => {
+  try {
+    const response = await api.get("/accounting", { params: { page, limit } });
+    return response.data;
+  } catch (error: any) {
+    console.error(`Failed to get Accounts: ${error.message}`);
+  }
 };
 
 export const createAccount = async (accountData: any) => {
-  const response = await api.post("/accounting", accountData);
-  return response.data;
+  try {
+    const response = await api.post("/accounting", accountData);
+    return response.data;
+  } catch (error: any) {
+    console.error(`Failed to create Account: ${error.message}`);
+  }
 };
 
 export default api;

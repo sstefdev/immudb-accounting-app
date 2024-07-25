@@ -1,4 +1,4 @@
-# immudb Accounting App
+# immudb Accounting App ![accounting-icon](./immudb-fe/public/favicon-32x32.png)
 
 This is a monorepo containing a NestJS backend and a Next.js frontend for an accounting application using immudb Vault.
 
